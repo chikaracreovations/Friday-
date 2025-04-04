@@ -346,6 +346,7 @@ async function generateResponse(prompt) {
     const output = document.getElementById("output");
     output.textContent = prompt;
 
+    // Add user message to conversation
     conversationHistory.push({ role: "user", content: prompt });
 
     try {
@@ -359,16 +360,17 @@ async function generateResponse(prompt) {
 
         const data = await res.json();
         if (data.choices && data.choices[0]) {
-            const reply = data.choices[0].message.content;
-            output.textContent = reply;
-            speak(reply);
+    const reply = data.choices[0].message.content;
+    output.textContent = reply;
+    speak(reply);
 
-            conversationHistory.push({ role: "assistant", content: reply });
+    conversationHistory.push({ role: "assistant", content: reply });
 
-            if (conversationHistory.length > 20) {
-                conversationHistory.splice(1, conversationHistory.length - 20);
-            }
-        } else {
+    // Optional: Limit to last 20 messages to avoid overload
+    if (conversationHistory.length > 20) {
+        conversationHistory.splice(1, conversationHistory.length - 20); // keeps system + last 9 pairs
+    }
+} else {
             output.textContent = "I'm not sure how to respond.";
         }
     } catch (err) {
@@ -377,8 +379,7 @@ async function generateResponse(prompt) {
         speak("Sorry, I couldn't get a response.");
     }
 }
-
-
+ 
 
 function sendEmail(to, subject, body) {
     let emailLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
