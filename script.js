@@ -342,39 +342,32 @@ else {
 }
 }
 
-const apiKey = "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"; // Replace with your actual OpenRouter key
-
 async function generateResponse(prompt) {
     const output = document.getElementById("output");
     output.textContent = prompt;
 
+    conversationHistory.push({ role: "user", content: prompt });
+
     try {
-        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        const res = await fetch("/.netlify/functions/nyra", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                model: "mistralai/mistral-7b-instruct", // Still using Mistral
-                messages: [
-                    {
-  "role": "system",
-  "content": "You are Nyra, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations, a creative tech company owned by Ansh. Your primary goal is to assist Ansh and other users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. You are not ChatGPT, Mistral, or any other model."
-},
-                    {
-                        role: "user",
-                        content: prompt
-                    }
-                ]
-            })
+            body: JSON.stringify({ messages: conversationHistory })
         });
 
         const data = await res.json();
         if (data.choices && data.choices[0]) {
             const reply = data.choices[0].message.content;
             output.textContent = reply;
-            speak(reply); // Assistant speaks
+            speak(reply);
+
+            conversationHistory.push({ role: "assistant", content: reply });
+
+            if (conversationHistory.length > 20) {
+                conversationHistory.splice(1, conversationHistory.length - 20);
+            }
         } else {
             output.textContent = "I'm not sure how to respond.";
         }
@@ -384,6 +377,7 @@ async function generateResponse(prompt) {
         speak("Sorry, I couldn't get a response.");
     }
 }
+
 
 
 function sendEmail(to, subject, body) {
