@@ -349,13 +349,13 @@ async function generateResponse(prompt) {
     conversationHistory.push({ role: "user", content: prompt });
 
     try {
-        const res = await fetch("/.netlify/functions/nyra", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ messages: conversationHistory })
-        });
+        const res = await fetch("/.netlify/functions/chat", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ messages: conversationHistory })
+});
 
         const data = await res.json();
         if (data.choices && data.choices[0]) {
