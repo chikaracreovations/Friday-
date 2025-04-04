@@ -331,7 +331,7 @@ function respond(input) {
 
 
     
-    if (input.includes("hello")) {
+    if (input.includes("boy")) {
         speak("Hello! How can I assist you?");
     } 
     
@@ -342,7 +342,7 @@ else {
 }
 }
 
-const apiKey = "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"; // Replace with your actual OpenRouter key
+const apiKey = "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"; // Replace with your actual OpenRouter key
 
 async function generateResponse(prompt) {
     const output = document.getElementById("output");
