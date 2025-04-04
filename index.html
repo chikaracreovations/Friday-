@@ -8,33 +8,40 @@
 </head>
 <body>
     <div class="assistant">
-        <h1>Friday - Your Virtual Assistant</h1>
+       
+       <p> #created by Chikara Creovations </p>
+      
+        <h1>Nyra - Your Virtual Assistant</h1>
         <button onclick="startListening()">🎤 Speak</button>
         <p id="output"></p>
 
-        <h2>Try Asking:</h2>
+      
+    
+    <!-- Projects Modal -->
+<div id="projectsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>My Projects</h2>
         <ul>
-            <li>🗣 "Hello"</li>
-            <li>🗣 "How are you?"</li>
-            <li>🗣 "What time is it?"</li>
-            <li>🗣 "What’s the date today?"</li>
-            <li>🗣 "Who are you?"</li>
-            <li>🗣 "Who created you?"</li>
-            <li>🗣 "Tell me a joke"</li>
-            <li>🗣 "Tell me a fact"</li>
-            <li>🗣 "What is the capital of France?"</li>
-            <li>🗣 "Who is the president of India?"</li>
-            <li>🗣 "Remember that I have a meeting at 5 PM"[❌️]</li>
-            <li>🗣 "What do you remember?"[❌️]</li>
-            <li>🗣 "Search for your question" 🔎</li>
-            <li>🗣 "Play Shape of You on YouTube" 🎵</li>
-            <li>🗣 "Remind me to call mom at 5 PM" ⏰ [❌️]</li>
-           
-            <li> 🗣 "Open Whatsapp/Insta/YouTube" 🧠</li>
-            <li>🗣 "What can you do?"</li>
+            <li><a href="https://project1-link.com" target="_blank">Project 1</a></li>
+            <li><a href="https://project2-link.com" target="_blank">Project 2</a></li>
+            <li><a href="https://project3-link.com" target="_blank">Project 3</a></li>
         </ul>
     </div>
+</div>
+
+<div id="timerModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background:white; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); text-align:center;">
+    <h2>Timer</h2>
+    <p id="timerDisplay">0:00</p>
+    <button onclick="closeTimerModal()">Cancel Timer</button>
+</div>
+
+
+
+
+
 
     <script type="module" src="script.js"></script>
+
 </body>
 </html>
