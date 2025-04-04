@@ -1,0 +1,346 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Friday - Personal Assistant</title>  
+    <link rel="stylesheet" href="styles.css">  
+<style>  /* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* General Styling */
+body {
+font-family: 'Poppins', sans-serif;
+background-color: #121212;
+color: #ffffff;
+text-align: center;
+margin: 0;
+padding: 0;
+}
+
+/* Assistant Container */
+.assistant {
+margin-top: 50px;
+padding: 25px;
+border-radius: 10px;
+background: linear-gradient(135deg, #1a1a1a, #222);
+box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
+}
+
+/* Title Styling */
+h1 {
+font-size: 2.5rem;
+background: linear-gradient(45deg, cyan, magenta);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+/* Speak Button */
+button {
+background-color: #00adb5;
+border: none;
+padding: 15px 25px;
+font-size: 18px;
+color: white;
+cursor: pointer;
+border-radius: 8px;
+transition: 0.3s ease-in-out;
+box-shadow: 0px 5px 15px rgba(0, 255, 255, 0.3);
+}
+
+button:hover {
+background-color: #007f88;
+transform: scale(1.1);
+}
+
+/* Output Text */
+#output {
+font-size: 0.8rem;
+font-weight: bold;
+margin-top: 15px;
+color: #00ffcc;
+text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Collapsible Commands Section */
+.collapsible {
+background-color: #222;
+color: white;
+cursor: pointer;
+padding: 15px;
+width: 100%;
+border: none;
+text-align: left;
+font-size: 18px;
+border-radius: 5px;
+margin-top: 20px;
+transition: 0.3s;
+}
+
+.collapsible:hover {
+background-color: #444;
+}
+
+.active, .collapsible:focus {
+background-color: #007f88;
+}
+
+.collapsible-content {
+display: none;
+padding: 15px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 5px;
+margin-top: 10px;
+}
+
+/* Commands List */
+ul {
+list-style: none;
+padding: 0;
+}
+
+ul li {
+font-size: 1.2rem;
+padding: 10px;
+border-radius: 5px;
+margin: 5px 0;
+transition: 0.3s ease-in-out;
+cursor: pointer;
+}
+
+ul li:hover {
+background: rgba(255, 255, 255, 0.2);
+transform: scale(1.05);
+}
+
+/* Modal Styling */
+.modal {
+display: none;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+background-color: #222;
+padding: 20px;
+border-radius: 10px;
+text-align: center;
+max-width: 500px;
+margin: 15% auto;
+box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+}
+
+.modal-content h2 {
+color: cyan;
+}
+
+.modal-content ul li a {
+color: #00adb5;
+text-decoration: none;
+font-weight: bold;
+}
+
+.modal-content ul li a:hover {
+color: #ff4d4d;
+}
+
+/* Close Button */
+.close {
+color: white;
+float: right;
+font-size: 30px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.close:hover {
+color: red;
+}
+
+</style>  </head>  
+<body>  
+    <div class="assistant">  <p> #created by Chikara Creovations </p>  
+    
+    <h1>Nyra - Your Virtual Assistant</h1> 
+    
+    
+    <button onclick="startListening()">🎤 Speak</button>  
+    <p id="output"></p>  
+
+    
+  
+<!-- Projects Modal -->
+
+<div id="projectsModal" class="modal">  
+    <div class="modal-content">  
+        <span class="close" id="closeModal">&times;</span>  
+        <h2>My Projects</h2>  
+        <ul>  
+            <li><a href="https://project1-link.com" target="_blank">Project 1</a></li>  
+            <li><a href="https://project2-link.com" target="_blank">Project 2</a></li>  
+            <li><a href="https://project3-link.com" target="_blank">Project 3</a></li>  
+        </ul>  
+    </div>  
+</div>  <div id="timerModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background:white; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); text-align:center;">  
+    <h2>Timer</h2>  
+    <p id="timerDisplay">0:00</p>  
+    <button onclick="closeTimerModal()">Cancel Timer</button>  
+</div>  <script type="module" src="script.js"></script>
+
+  <script >  
+  
+  
+// Check if Speech Recognition is supported  
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;  
+if (!SpeechRecognition) {  
+    alert("Speech recognition is not supported in your browser. Try using Google Chrome.");  
+} else {  
+    var recognition = new SpeechRecognition();  
+    recognition.lang = 'en-US';  
+    recognition.interimResults = false;  
+    recognition.continuous = false;  
+  
+  function startListening() {  
+        recognition.start();  
+    }  
+      
+  window.startListening = startListening;  
+  
+    recognition.onresult = (event) => {  
+        const text = event.results[0][0].transcript.toLowerCase();  
+        document.getElementById('output').innerText = `You said: ${text}`;  
+        respond(text);  
+    };  
+  
+    recognition.onerror = (event) => {  
+        console.error("Speech recognition error:", event.error);  
+        speak("Sorry, I couldn't understand. Please try again.");  
+    };  
+}  
+  
+// Global speak function with delay  
+function speak(text) {  
+    const synth = window.speechSynthesis;  
+    const utterance = new SpeechSynthesisUtterance(text);  
+    utterance.pitch = 1;  
+    utterance.rate = 1.4;  
+      
+    // Ensure voices are loaded before speaking  
+    if (synth.speaking) {  
+        console.warn("Already speaking, waiting...");  
+        setTimeout(() => speak(text), 500);  
+        return;  
+    }  
+  
+    utterance.onend = () => console.log("Speech finished.");  
+    synth.speak(utterance);  
+}  
+  
+  
+  
+function respond(input) {  
+    const now = new Date();  
+  
+  
+// Handle WhatsApp messaging with contacts  
+    if (input.startsWith("send a whatsapp message to")) {  
+        let phrase = input.replace("send a whatsapp message to", "").trim();  
+  
+        let nameMatch = Object.keys(contacts).find(name => phrase.startsWith(name));  
+        if (nameMatch) {  
+            let number = contacts[nameMatch];  
+            let message = phrase.replace(nameMatch, "").replace("saying", "").trim();  
+  
+            if (message) {  
+                sendWhatsAppMessage(number, message);  
+            } else {  
+                speak(`What would you like to say to ${nameMatch}?`);  
+            }  
+        } else {  
+            let parts = phrase.split("saying");  
+            if (parts.length === 2) {  
+                let number = parts[0].trim().replace(/\D/g, ""); // Extract digits  
+                let message = parts[1].trim();  
+                sendWhatsAppMessage(number, message);  
+            } else {  
+                speak("Please specify the recipient and message.");  
+            }  
+        }  
+    }  
+  
+  
+      
+    if (input.includes("boy")) {  
+        speak("Hello! How can I assist you?");  
+    }   
+   
+ // left Blank for  else if functions to perform specific task like opening apps sending mails etc  
+   
+      
+// Add Hugging Face API call in else block  
+else {  
+    speak();  
+    generateResponse(input); // Call OpenRouter LLM  
+}  
+}  
+  
+  
+const conversationHistory = [  
+  {  
+    role: "system",  
+    content: "You are Nyra, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations, a creative tech company owned by Ansh. Your primary goal is to assist users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. keep your tone casual and funny ! and answer to point precise concise and short !You are not ChatGPT, Mistral, or any other model ."   // your current system prompt  
+  }  
+];  
+  
+  
+async function generateResponse(prompt) {
+    const output = document.getElementById("output");
+    output.textContent = prompt;
+
+    // Add user message to conversation
+    conversationHistory.push({ role: "user", content: prompt });
+
+    try {
+        const res = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                messages: conversationHistory
+            })
+        });
+
+        const data = await res.json();
+        if (data.choices && data.choices[0]) {
+            const reply = data.choices[0].message.content;
+            output.textContent = reply;
+            speak(reply);
+
+            conversationHistory.push({ role: "assistant", content: reply });
+
+            // Optional: Limit to last 20 messages
+            if (conversationHistory.length > 20) {
+                conversationHistory.splice(1, conversationHistory.length - 20); // keeps system + last 9 pairs
+            }
+        } else {
+            output.textContent = "I'm not sure how to respond.";
+        }
+    } catch (err) {
+        console.error(err);
+        output.textContent = "There was a problem getting the response.";
+        speak("Sorry, I couldn't get a response.");
+    }
+}
+   
+   
+      
+  </script>  </body>  
+</html>  
