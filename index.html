@@ -164,14 +164,54 @@ cursor: pointer;
 color: red;
 }
 
+.core-visual {
+    margin: 20px auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+    animation: pulse 2s infinite;
+}
+
+.core-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.9);
+    }
+}
+
+
 </style>  </head>  
 <body>  
     <div class="assistant">  <p> #created by Chikara Creovations </p>  
     
     <h1>Nyra - Your Virtual Assistant</h1> 
+   
+<div style="text-align: center;">
+    <p style="margin-bottom: 10px; font-size: 1.1rem;">Tap to Speak</p>
+    <div class="core-visual" onclick="startListening()" style="cursor: pointer;">
+        <img src="https://i.pinimg.com/originals/ae/d1/1d/aed11d6975231b91c8e992c02b8376da.gif" alt="Core" />
+    </div>
+</div>
+   
     
+   <div style="margin-top: 20px;">
+    <input type="text" id="textInput" placeholder="Type your message..." style="padding: 10px; width: 60%; border-radius: 5px; border: none;">
+    <button2 onclick="handleTextInput()">Send</button2>
+</div>
+   
+    <br> 
     
-    <button onclick="startListening()">🎤 Speak</button>  
+
     <p id="output"></p>  
 
     
@@ -286,7 +326,7 @@ function respond(input) {
       
 // Add Hugging Face API call in else block  
 else {  
-    speak();  
+     
     generateResponse(input); // Call OpenRouter LLM  
 }  
 }  
@@ -295,7 +335,7 @@ else {
 const conversationHistory = [  
   {  
     role: "system",  
-    content: "You are Nyra, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations, a creative tech company owned by Ansh. Your primary goal is to assist users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. keep your tone casual and funny ! and answer to point precise concise and short !You are not ChatGPT, Mistral, or any other model ."   // your current system prompt  
+    content: "You are Nyra, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations,. Your primary goal is to assist users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. keep your tone casual and funny ! and answer to point precise concise and short !You are not ChatGPT, Mistral, or any other model ."   // your current system prompt  
   }  
 ];  
   
@@ -308,7 +348,7 @@ async function generateResponse(prompt) {
     conversationHistory.push({ role: "user", content: prompt });
 
     try {
-        const res = await fetch("http://localhost:3000/chat", {
+        const res = await fetch("https://clicks-shaft-exists-perth.trycloudflare.com/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -340,6 +380,24 @@ async function generateResponse(prompt) {
     }
 }
    
+
+function handleTextInput() {
+    const inputField = document.getElementById('textInput');
+    const input = inputField.value.trim().toLowerCase();
+    if (input) {
+        document.getElementById('output').innerText = `You typed: ${input}`;
+        inputField.value = '';
+        respond(input);
+    }
+}
+
+
+    document.getElementById("textInput").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            handleTextInput();
+        }
+    });
+
    
       
   </script>  </body>  
