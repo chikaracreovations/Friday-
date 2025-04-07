@@ -348,7 +348,7 @@ async function generateResponse(prompt) {
     conversationHistory.push({ role: "user", content: prompt });
 
     try {
-        const res = await fetch("https://clicks-shaft-exists-perth.trycloudflare.com/chat", {
+        const res = await fetch("https://frosty-dawn-d483.chkhushboo011.workers.dev/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
