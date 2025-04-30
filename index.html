@@ -9,7 +9,6 @@
 
 
 
-
 <style>  /* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -413,20 +412,22 @@ transition: 0.3s ease-in-out;
 <body>  
     <div class="assistant">  <p> #created by Chikara Creovations </p>  
    
-<h1>Hey, I’m Naira — Always Here for You</h1>
+<h1>Hey, I’m Naira — Always Here for You!</h1>
    
     
  
 <a href="#" id="viewMemoryLink" style="color: #00adb5; text-decoration: none; font-size: 10px;">View Stored Memory</a>
 <!-- Trigger Button -->
-<button2 onclick="openAuthModal()" style="color: #00adb5; text-decoration: none; font-size: 10px;">Login / Register</button2>
+<button2 onclick="openAuthModal()" style="color: #00adb5; text-decoration: none; font-size: 10px;">Register / Login Logout </button2>
   
   <!-- Modal for displaying local storage -->
 <div id="memoryModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeMemoryModal()">&times;</span>
         <h2>Stored Memory</h2>
+        
         <div id="memoryList" style="max-height: 300px; overflow-y: auto;">
+            
             <!-- Memory items will be 
             displayed here -->
         </div>
@@ -631,6 +632,14 @@ function respond(input) {
         generateResponse(input); // Default chat mode
     }
 }
+
+document.getElementById("email").addEventListener("input", () => {
+  document.getElementById("authError").textContent = "";
+});
+
+document.getElementById("password").addEventListener("input", () => {
+  document.getElementById("authError").textContent = "";
+});
 
 
 function detectAndStoreMemory(input) {
@@ -900,20 +909,26 @@ window.firebaseSignOut = () => signOut(auth);
 window.register = async function () {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errorElement = document.getElementById("authError");
+
   try {
     await createUserWithEmailAndPassword(auth, email, password);
+    errorElement.textContent = ""; // Clear error on success
   } catch (err) {
-    document.getElementById("authError").textContent = err.message;
+    errorElement.textContent = err.message;
   }
 };
 
 window.login = async function () {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errorElement = document.getElementById("authError");
+
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    errorElement.textContent = ""; // Clear error on success
   } catch (err) {
-    document.getElementById("authError").textContent = err.message;
+    errorElement.textContent = err.message;
   }
 };
 
@@ -921,17 +936,16 @@ window.logout = async function () {
   await signOut(auth);
 };
 
-
-
-// Initialize Auth
-
 // Expose to window so it works in <button onclick="...">
 window.firebaseAuth = auth;
+
 window.firebaseSignIn = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
     console.log("Signed in:", result.user.email);
+    document.getElementById("authError").textContent = ""; // Clear on success
   } catch (error) {
+    document.getElementById("authError").textContent = error.message;
     console.error("Sign-in error:", error);
   }
 };
@@ -946,27 +960,40 @@ window.firebaseSignOut = async function () {
 };
 
 
+
+
 onAuthStateChanged(auth, (user) => {
   const statusText = document.getElementById("userStatus");
-  const logoutBtn = document.getElementById("logoutButton");
   const authModal = document.getElementById("authModal");
+
+  const loginBtn = document.querySelector("button[onclick='login()']");
+  const registerBtn = document.querySelector("button[onclick='register()']");
+  const logoutBtn = document.getElementById("logoutButton");
 
   if (user) {
     const nameOrEmail = user.displayName || user.email;
     statusText.textContent = `Logged in as: ${nameOrEmail}`;
-    logoutBtn.style.display = "inline-block";
-    if (authModal) authModal.style.display = "none"; // Close modal
+
+    // Hide login/register, show logout
+    if (loginBtn) loginBtn.style.display = "none";
+    if (registerBtn) registerBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
+
+    if (authModal) authModal.style.display = "none";
     loadMemory();
   } else {
     statusText.textContent = "Not logged in.";
-    logoutBtn.style.display = "none";
+
+    // Show login/register, hide logout
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    if (registerBtn) registerBtn.style.display = "inline-block";
+    if (logoutBtn) logoutBtn.style.display = "none";
+
     longTermMemory = [];
 
-    // Optionally open modal on load if not logged in:
     if (authModal) authModal.style.display = "flex";
   }
 });
-
 
   
   
