@@ -4,6 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Friday - Personal Assistant</title>  
     <link rel="stylesheet" href="styles.css">  
+    <script src="task.js"></script>
+<!-- Firebase App (core) -->
+
+
+
+
 <style>  /* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -23,16 +29,17 @@ margin-top: 50px;
 padding: 25px;
 border-radius: 10px;
 background: linear-gradient(135deg, #1a1a1a, #222);
-box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
 max-width: 600px;
+background: url('https://i.pinimg.com/originals/dc/a6/61/dca661166c7c412bae6b42e8d54e7a1b.gif') no-repeat center center/cover;
 margin-left: auto;
 margin-right: auto;
 }
 
 /* Title Styling */
 h1 {
-font-size: 2.5rem;
-background: linear-gradient(45deg, cyan, magenta);
+font-size: 0.8rem;
+background: white;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 }
@@ -60,7 +67,7 @@ transform: scale(1.1);
 font-size: 0.8rem;
 font-weight: bold;
 margin-top: 15px;
-color: #00ffcc;
+color: white;
 text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.5);
 }
 
@@ -190,16 +197,246 @@ color: red;
 }
 
 
+
+
+.chat-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: #333;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+}
+
+.assistant-message {
+    background-color: #333;
+    color: floralwhite;
+    align-self: flex-start;
+    text-align: left;
+    margin-right: auto;
+}
+
+/* Container to scope authentication-specific styles */
+.auth-module {
+    font-family: Arial, sans-serif;
+}
+
+/* Basic styling for modal */
+.auth-modal {
+    display: none; /* Initially hidden */
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.auth-modal-content {
+    position: absolute; /* Position it absolutely */
+    left: 50%; /* Center horizontally */
+    top: 50%; /* Center vertically */
+    transform: translate(-50%, -50%); /* Shift it back to center */
+    background-color: dimgrey;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px; /* Fixed width for modal content */
+    text-align: center;
+}
+.auth-module input {
+    margin: 5px 0;
+    padding: 10px;
+    width: 90%;
+}
+
+.auth-module button {
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+button2 {
+background-color: none;
+border: none;
+padding: 15px 25px;
+font-size: 18px;
+color: white;
+cursor: pointer;
+border-radius: 8px;
+transition: 0.3s ease-in-out;
+
+}
+
+.auth-error {
+    color: red;
+}
+
+#logoutButton {
+    display: none; /* Hide logout button initially */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+    width: 80%;
+    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+}
+
+.close {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+}
+
+#memoryList {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #fff;
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Basic styling for modal */
+.auth-modal {
+    display: none; /* Initially hidden */
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.auth-modal-content {
+    position: absolute; /* Position it absolutely */
+    left: 50%; /* Center horizontally */
+    top: 50%; /* Center vertically */
+    transform: translate(-50%, -50%); /* Shift it back to center */
+    background-color: black;
+    padding: 20px;
+  border: 2px solid white; /* red border */
+    border-radius: 5px;
+    width: 300px; /* Fixed width for modal content */
+    text-align: center;
+}
+
+.auth-modal-content input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.auth-modal-content button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.auth-error {
+    color: red;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
 </style>  </head>  
 <body>  
     <div class="assistant">  <p> #created by Chikara Creovations </p>  
+   
+<h1>Hey, I’m Naira — Always Here for You</h1>
+   
     
-    <h1>Nyra - Your Virtual Assistant</h1> 
+ 
+<a href="#" id="viewMemoryLink" style="color: #00adb5; text-decoration: none; font-size: 10px;">View Stored Memory</a>
+<!-- Trigger Button -->
+<button2 onclick="openAuthModal()" style="color: #00adb5; text-decoration: none; font-size: 10px;">Login / Register</button2>
+  
+  <!-- Modal for displaying local storage -->
+<div id="memoryModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeMemoryModal()">&times;</span>
+        <h2>Stored Memory</h2>
+        <div id="memoryList" style="max-height: 300px; overflow-y: auto;">
+            <!-- Memory items will be 
+            displayed here -->
+        </div>
+    </div>
+</div> 
    
 <div style="text-align: center;">
-    <p style="margin-bottom: 10px; font-size: 1.1rem;">Tap to Speak</p>
+    
     <div class="core-visual" onclick="startListening()" style="cursor: pointer;">
-        <img src="https://i.pinimg.com/originals/ae/d1/1d/aed11d6975231b91c8e992c02b8376da.gif" alt="Core" />
+        <img src="https://static01.nyt.com/images/2022/04/14/multimedia/05ai-mentalhealth-02/05ai-mentalhealth-02-superJumbo.gif" alt="Core" />
     </div>
 </div>
    
@@ -207,34 +444,91 @@ color: red;
    <div style="margin-top: 20px;">
     <input type="text" id="textInput" placeholder="Type your message..." style="padding: 10px; width: 60%; border-radius: 5px; border: none;">
     <button2 onclick="handleTextInput()">Send</button2>
-</div>
    
     <br> 
     
 
-    <p id="output"></p>  
 
-    
+
+
+</div>
+
+</div>
+
+  <div id="output"></div>
+
+
+
+
+<!-- Auth Modal -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-modal-content">
+    <span class="close" onclick="closeAuthModal()">&times;</span>
+    <h3 style="color: white;">Login or Register</h3>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+    <button onclick="logout()" id="logoutButton">Logout</button>
+    <p class="auth-error" id="authError"></p>
+    <p id="userStatus" style="color: cyan; margin-top: 10px;"></p>
+  </div>
+</div>
+
+
+<div id="chat-container" class="chat-container">
   
-<!-- Projects Modal -->
 
-<div id="projectsModal" class="modal">  
-    <div class="modal-content">  
-        <span class="close" id="closeModal">&times;</span>  
-        <h2>My Projects</h2>  
-        <ul>  
-            <li><a href="https://project1-link.com" target="_blank">Project 1</a></li>  
-            <li><a href="https://project2-link.com" target="_blank">Project 2</a></li>  
-            <li><a href="https://project3-link.com" target="_blank">Project 3</a></li>  
-        </ul>  
-    </div>  
-</div>  <div id="timerModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background:white; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); text-align:center;">  
-    <h2>Timer</h2>  
-    <p id="timerDisplay">0:00</p>  
-    <button onclick="closeTimerModal()">Cancel Timer</button>  
-</div>  <script type="module" src="script.js"></script>
+  
+  
+</div>
+
+
+
+
+<script type="module" src="script.js"></script>
+
+
 
   <script >  
+  
+let longTermMemory = [];
+
+async function loadMemory() {
+  const user = window.firebaseAuth.currentUser;
+  if (!user) return;
+
+  const snapshot = await window.firebaseGetDocs(
+    window.firebaseCollection(window.firebaseDB, `memory_${user.uid}`)
+  );
+  longTermMemory = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+async function saveMemoryEntry(entry) {
+  const user = window.firebaseAuth.currentUser;
+  if (!user) return;
+
+  if (!longTermMemory.find(m => m.memory === entry)) {
+    const docRef = await window.firebaseAddDoc(
+      window.firebaseCollection(window.firebaseDB, `memory_${user.uid}`),
+      { memory: entry }
+    );
+    longTermMemory.push({ id: docRef.id, memory: entry });
+  }
+}
+
+
+async function deleteMemoryEntry(id) {
+  const user = window.firebaseAuth.currentUser;
+  if (!user) return;
+
+  await window.firebaseDeleteDoc(
+    window.firebaseDoc(window.firebaseDB, `memory_${user.uid}`, id)
+  );
+
+  longTermMemory = longTermMemory.filter(m => m.id !== id);
+}
+  
   
   
 // Check if Speech Recognition is supported  
@@ -245,11 +539,31 @@ if (!SpeechRecognition) {
     var recognition = new SpeechRecognition();  
     recognition.lang = 'en-US';  
     recognition.interimResults = false;  
-    recognition.continuous = false;  
+    recognition.continuous = true;  
   
-  function startListening() {  
-        recognition.start();  
-    }  
+  let recognitionTimeout;
+let keepListening = false;
+
+let inactivityTimer;
+
+
+
+function startListening() {
+    if (!recognition) return;
+
+    keepListening = true;
+    recognition.start();
+
+
+
+
+    // Set a timer to stop listening after 1 minute
+    recognitionTimeout = setTimeout(() => {
+        keepListening = false;
+        recognition.stop();
+        console.log("Stopped after 1 minute");
+    }, 90000); // 90 seconds
+}
       
   window.startListening = startListening;  
   
@@ -257,95 +571,164 @@ if (!SpeechRecognition) {
         const text = event.results[0][0].transcript.toLowerCase();  
         document.getElementById('output').innerText = `You said: ${text}`;  
         respond(text);  
+         // reset inactivity when user speaks
     };  
   
     recognition.onerror = (event) => {  
         console.error("Speech recognition error:", event.error);  
-        speak("Sorry, I couldn't understand. Please try again.");  
-    };  
+      
+    }; 
+    
+    // reset inactivity when user speaks
 }  
+
+
   
 // Global speak function with delay  
-function speak(text) {  
-    const synth = window.speechSynthesis;  
-    const utterance = new SpeechSynthesisUtterance(text);  
-    utterance.pitch = 1;  
-    utterance.rate = 1.4;  
-      
-    // Ensure voices are loaded before speaking  
-    if (synth.speaking) {  
-        console.warn("Already speaking, waiting...");  
-        setTimeout(() => speak(text), 500);  
-        return;  
-    }  
-  
-    utterance.onend = () => console.log("Speech finished.");  
-    synth.speak(utterance);  
-}  
-  
-  
-  
-function respond(input) {  
-    const now = new Date();  
-  
-  
-// Handle WhatsApp messaging with contacts  
-    if (input.startsWith("send a whatsapp message to")) {  
-        let phrase = input.replace("send a whatsapp message to", "").trim();  
-  
-        let nameMatch = Object.keys(contacts).find(name => phrase.startsWith(name));  
-        if (nameMatch) {  
-            let number = contacts[nameMatch];  
-            let message = phrase.replace(nameMatch, "").replace("saying", "").trim();  
-  
-            if (message) {  
-                sendWhatsAppMessage(number, message);  
-            } else {  
-                speak(`What would you like to say to ${nameMatch}?`);  
-            }  
-        } else {  
-            let parts = phrase.split("saying");  
-            if (parts.length === 2) {  
-                let number = parts[0].trim().replace(/\D/g, ""); // Extract digits  
-                let message = parts[1].trim();  
-                sendWhatsAppMessage(number, message);  
-            } else {  
-                speak("Please specify the recipient and message.");  
-            }  
-        }  
-    }  
+function speak(text) {
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.pitch = 1.4;
+    utterance.rate = 1.35;
+
+    if (synth.speaking) {
+        console.warn("Already speaking, waiting...");
+        setTimeout(() => speak(text), 500);
+        return;
+    }
+
+    utterance.onend = () => {
+        console.log("Speech finished.");
+        // Start listening again after speaking finishes
+        startListening();
+    };
+
+    synth.speak(utterance);
+}
   
   
-      
-    if (input.includes("boy")) {  
-        speak("Hello! How can I assist you?");  
-    }   
-   
- // left Blank for  else if functions to perform specific task like opening apps sending mails etc  
-   
-      
-// Add Hugging Face API call in else block  
-else {  
-     
-    generateResponse(input); // Call OpenRouter LLM  
-}  
-}  
+  let mode = "chat"; // Global mode tracking
+
+function respond(input) {
+    input = input.toLowerCase();
+
+    if (input.includes("switch to task mode")) {
+    mode = "task";
+    speak("Entering Task Mode");
+    
+    return;
+} else if (input.includes("exit task mode")) {
+    mode = "chat";
+    speak("Back to Chat Mode");
+    
+    return;
+}
+
+    if (mode === "task") {
+        handleTask(input); // Coming from task.js
+    } else {
+      detectAndStoreMemory(input);
+        generateResponse(input); // Default chat mode
+    }
+}
+
+
+function detectAndStoreMemory(input) {
+    const user = firebaseAuth.currentUser;
+    if (!user) {
+        const reply = "Please log in first, so I can remember things just for you.";
+        addMessage("assistant", reply);
+        speak(reply);
+        return;
+    }
+
+    const rememberPattern = /remember (that )?(.+)/i;
+    const match = input.match(rememberPattern);
+
+    if (match && match[2]) {
+        const fact = match[2].trim();
+        const exists = longTermMemory.some(m => m.memory?.toLowerCase?.() === fact.toLowerCase());
+
+        if (!exists) {
+            longTermMemory.push(fact);
+            saveMemoryEntry(fact);
+            const reply = "Alright,I’ll remember that!";
+            addMessage("assistant", reply);
+            speak(reply);
+        } else {
+            const reply = "I already have that saved.";
+            addMessage("assistant", reply);
+            speak(reply);
+            
+        }
+        return;
+    }
+
+    const patterns = [
+        { regex: /my name is ([a-z\s]+)/i, template: name => `User's name is ${name.trim()}` },
+        { regex: /i (like|love) ([a-z\s]+)/i, template: (_, interest) => `User likes ${interest.trim()}` },
+        { regex: /i hate ([a-z\s]+)/i, template: hate => `User dislikes ${hate.trim()}` },
+        { regex: /i don't like ([a-z\s]+)/i, template: dislike => `User dislikes ${dislike.trim()}` },
+        { regex: /my birthday is (.+)/i, template: bday => `User's birthday is ${bday.trim()}` },
+        { regex: /call me ([a-z\s]+)/i, template: nickname => `User prefers to be called '${nickname.trim()}'` },
+        { regex: /i feel ([a-z\s]+)/i, template: mood => `User is feeling ${mood.trim()}` },
+        { regex: /i am (\d+) years? old/i, template: age => `User is ${age.trim()} years old` },
+        { regex: /i live in ([a-z\s]+)/i, template: location => `User lives in ${location.trim()}` },
+        { regex: /my favorite color is ([a-z\s]+)/i, template: color => `User's favorite color is ${color.trim()}` },
+        { regex: /i enjoy (.+)/i, template: hobby => `User enjoys ${hobby.trim()}` },
+        { regex: /i am a ([a-z\s]+)/i, template: job => `User works as a ${job.trim()}` },
+        { regex: /my favorite food is ([a-z\s]+)/i, template: food => `User's favorite food is ${food.trim()}` },
+        { regex: /i prefer (morning|afternoon|evening)/i, template: time => `User prefers the ${time.trim()}` },
+        { regex: /i am (single|in a relationship|married)/i, template: status => `User is ${status.trim()}` },
+        { regex: /my favorite music genre is ([a-z\s]+)/i, template: genre => `User's favorite music genre is ${genre.trim()}` },
+        { regex: /i have a ([a-z\s]+)/i, template: pet => `User has a ${pet.trim()}` },
+        { regex: /my favorite (movie|tv show) is ([a-z\s]+)/i, template: (type, show) => `User's favorite ${type} is ${show.trim()}` },
+        { regex: /i speak ([a-z\s]+)/i, template: language => `User speaks ${language.trim()}` }
+    ];
+
+    for (let { regex, template } of patterns) {
+        const match = input.match(regex);
+        if (match) {
+            const memoryEntry = template(...match.slice(1));
+            if (!longTermMemory.some(m => m.memory?.toLowerCase?.() === memoryEntry.toLowerCase())) {
+                longTermMemory.push(memoryEntry);
+                saveMemoryEntry(memoryEntry);
+                const reply = "Memory Added";
+                addMessage("assistant", reply);
+                speak(reply);
+            }
+        }
+    }
+}
   
+  
+
+
   
 const conversationHistory = [  
   {  
     role: "system",  
-    content: "You are Nyra, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations,. Your primary goal is to assist users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. keep your tone casual and funny ! and answer to point precise concise and short !You are not ChatGPT, Mistral, or any other model ."   // your current system prompt  
+    content: "You are Naira, a highly intelligent, friendly, and resourceful virtual assistant created by Chiikaaara Creovations, which is owned by Chiikaara . Your primary goal is to assist users with a wide range of tasks — including answering questions, remembering information when asked, performing web-based actions, setting reminders, and engaging in natural conversation.\n\nYou speak clearly, with a helpful and respectful tone, and your answers are informative but easy to understand. You do not over-explain unless asked, and you avoid filler or vague responses.\n\nYou are allowed to remember preferences and facts the user asks you to remember, and you can refer to them when needed. You should always respond like a loyal and professional assistant who is proud to be part of Chiikaaara Creovations.\n\nAlways stay in character, and do not mention you are an AI model unless explicitly asked. If you are unsure about a fact, suggest checking online.\n\nYour name is Nyra. keep your tone casual and funny ! and answer to point precise concise and short !You are not ChatGPT, Mistral, or any other model . Be concise, skip fluff, and keep replies focused. Do not use Emojis or emoticons while replying"   // your current system prompt  
   }  
 ];  
-  
-  
-async function generateResponse(prompt) {
-    const output = document.getElementById("output");
-    output.textContent = prompt;
 
-    // Add user message to conversation
+ async function generateResponse(prompt) {
+    const output = document.getElementById("output");
+    addMessage("user", prompt);
+
     conversationHistory.push({ role: "user", content: prompt });
+
+    // Inject memory into the system prompt
+    const baseSystemPrompt = conversationHistory[0].content;
+const updatedSystemPrompt = {
+    role: "system",
+    content: `${baseSystemPrompt}\n\nHere are some things you know about the user: (you can use these detail when the question askded is relevent to the details)\n- ${longTermMemory.map(m => m.memory).join('\n- ')}`
+};
+
+    const requestMessages = [
+        updatedSystemPrompt,
+        ...conversationHistory.slice(1)
+    ];
 
     try {
         const res = await fetch("https://frosty-dawn-d483.chkhushboo011.workers.dev/chat", {
@@ -354,21 +737,20 @@ async function generateResponse(prompt) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                messages: conversationHistory
+                messages: requestMessages
             })
         });
 
         const data = await res.json();
         if (data.choices && data.choices[0]) {
             const reply = data.choices[0].message.content;
-            output.textContent = reply;
+            addMessage("assistant", reply);
             speak(reply);
 
             conversationHistory.push({ role: "assistant", content: reply });
 
-            // Optional: Limit to last 20 messages
             if (conversationHistory.length > 20) {
-                conversationHistory.splice(1, conversationHistory.length - 20); // keeps system + last 9 pairs
+                conversationHistory.splice(1, conversationHistory.length - 20);
             }
         } else {
             output.textContent = "I'm not sure how to respond.";
@@ -398,7 +780,211 @@ function handleTextInput() {
         }
     });
 
-   
+async function addMessage(sender, text) {
+  const chatContainer = document.getElementById("chat-container");
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", sender === "user" ? "user-message" : "assistant-message");
+  messageDiv.textContent = text;
+  chatContainer.appendChild(messageDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+}
+     
+// Open memory modal and display stored facts
+document.getElementById("viewMemoryLink").addEventListener("click", function (event) {
+    event.preventDefault();
+    openMemoryModal();
+});
+
+// Function to open the modal and display memory
+async function openMemoryModal() {
+  const memoryModal = document.getElementById("memoryModal");
+  const memoryList = document.getElementById("memoryList");
+
+  memoryList.innerHTML = '';
+
+  await loadMemory();
+
+  if (longTermMemory.length > 0) {
+    longTermMemory.forEach(({ memory, id }) => {
+      const factWrapper = document.createElement("div");
+      factWrapper.style.display = "flex";
+      factWrapper.style.justifyContent = "space-between";
+      factWrapper.style.alignItems = "center";
+      factWrapper.style.marginBottom = "8px";
+
+      const factItem = document.createElement("span");
+      factItem.textContent = memory;
+      factItem.style.flex = "1";
+      factItem.style.color = "white";
+
+      const deleteBtn = document.createElement("span");
+      deleteBtn.textContent = "×";
+      deleteBtn.style.color = "red";
+      deleteBtn.style.cursor = "pointer";
+      deleteBtn.style.marginLeft = "10px";
+      deleteBtn.onclick = async () => {
+        await deleteMemoryEntry(id);
+        openMemoryModal();
+      };
+
+      factWrapper.appendChild(factItem);
+      factWrapper.appendChild(deleteBtn);
+      memoryList.appendChild(factWrapper);
+    });
+  } else {
+    memoryList.innerHTML = "<p>No memory stored yet.</p>";
+  }
+
+  memoryModal.style.display = "block";
+}
+
+// Close the modal
+function closeMemoryModal() {
+    const memoryModal = document.getElementById("memoryModal");
+    memoryModal.style.display = "none";
+}
+
+
+function openAuthModal() {
+  document.getElementById("authModal").style.display = "flex";
+}
+
+function closeAuthModal() {
+  document.getElementById("authModal").style.display = "none";
+}
+
+
       
-  </script>  </body>  
+  </script> 
+  
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  
+    // Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCiQsm5ARzxpkVmxWyKQlYAkso8zIdYxO8",
+    authDomain: "the-demo-store.firebaseapp.com",
+    projectId: "the-demo-store",
+    storageBucket: "the-demo-store.firebasestorage.app",
+    messagingSenderId: "41447504329",
+    appId: "1:41447504329:web:0af0c1ece41c0aa8971018",
+    measurementId: "G-HCMES5GED4"
+  };
+  
+  
+  
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+window.firebaseAuth = auth;
+
+
+window.firebaseAuth = auth;
+window.firebaseSignIn = () => signInWithPopup(auth, provider);
+window.firebaseSignOut = () => signOut(auth);
+
+
+window.register = async function () {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    document.getElementById("authError").textContent = err.message;
+  }
+};
+
+window.login = async function () {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    document.getElementById("authError").textContent = err.message;
+  }
+};
+
+window.logout = async function () {
+  await signOut(auth);
+};
+
+
+
+// Initialize Auth
+
+// Expose to window so it works in <button onclick="...">
+window.firebaseAuth = auth;
+window.firebaseSignIn = async function () {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("Signed in:", result.user.email);
+  } catch (error) {
+    console.error("Sign-in error:", error);
+  }
+};
+
+window.firebaseSignOut = async function () {
+  try {
+    await signOut(auth);
+    console.log("Signed out");
+  } catch (error) {
+    console.error("Sign-out error:", error);
+  }
+};
+
+
+onAuthStateChanged(auth, (user) => {
+  const statusText = document.getElementById("userStatus");
+  const logoutBtn = document.getElementById("logoutButton");
+  const authModal = document.getElementById("authModal");
+
+  if (user) {
+    const nameOrEmail = user.displayName || user.email;
+    statusText.textContent = `Logged in as: ${nameOrEmail}`;
+    logoutBtn.style.display = "inline-block";
+    if (authModal) authModal.style.display = "none"; // Close modal
+    loadMemory();
+  } else {
+    statusText.textContent = "Not logged in.";
+    logoutBtn.style.display = "none";
+    longTermMemory = [];
+
+    // Optionally open modal on load if not logged in:
+    if (authModal) authModal.style.display = "flex";
+  }
+});
+
+
+  
+  
+
+  // Expose to window
+  window.firebaseDB = db;
+  window.firebaseCollection = collection;
+  window.firebaseAddDoc = addDoc;
+  window.firebaseGetDocs = getDocs;
+  window.firebaseDeleteDoc = deleteDoc;
+  window.firebaseDoc = doc;
+  
+  
+  
+</script>
+
+  
+  
+  
+  </body>  
 </html>  
